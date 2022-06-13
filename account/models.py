@@ -91,12 +91,12 @@ class User(AbstractUser):
         choices=[('male', 'male'), ('female', 'female')], max_length=6, default='male', null=True, blank=True)
     date_of_birth = models.DateField(null=True, blank=True)
     tags = models.ManyToManyField(Tag, blank=True)
-    # applied_job = models.ForeignKey(
-    #     'job.Job',
-    #     on_delete=models.CASCADE,
-    #     null=True,
-    #     blank=True,
-    # )
+    applied_job = models.ForeignKey(
+        'job.Job',
+        on_delete=models.CASCADE,
+        null=True,
+        blank=True,
+    )
     allow_mail_notification = models.BooleanField(default=True, null=True)
 
     # Company fields
