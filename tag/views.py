@@ -9,7 +9,7 @@ from .serializers import TagSerializer
 
 # Create your views here
 @api_view(['GET', 'POST'])
-def tag(request):
+def tags(request):
     if request.method == 'GET':
         serializer = TagSerializer(Tag.objects.all(), many=True)
         return JsonResponse({'success': True, 'tag': serializer.data})
