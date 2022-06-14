@@ -1,9 +1,9 @@
 from django.contrib.auth.base_user import BaseUserManager
-from django.db import models
-from tag.models import Tag
 from django.contrib.auth.models import AbstractUser
-from django.utils.translation import gettext_lazy as _
 from django.contrib.auth.validators import UnicodeUsernameValidator
+from django.db import models
+from django.utils.translation import gettext_lazy as _
+from tag.models import Tag
 
 
 class UserManager(BaseUserManager):
@@ -91,12 +91,12 @@ class User(AbstractUser):
         choices=[('male', 'male'), ('female', 'female')], max_length=6, default='male', null=True, blank=True)
     date_of_birth = models.DateField(null=True, blank=True)
     tags = models.ManyToManyField(Tag, blank=True)
-    # applied_job = models.ForeignKey(
-    #     'job.Job',
-    #     on_delete=models.CASCADE,
-    #     null=True,
-    #     blank=True,
-    # )
+    applied_job = models.ForeignKey(
+        'job.Job',
+        on_delete=models.CASCADE,
+        null=True,
+        blank=True,
+    )
     allow_mail_notification = models.BooleanField(default=True, null=True)
 
     # Company fields
