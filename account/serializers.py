@@ -7,7 +7,7 @@ class DeveloperCreateSerializer(serializers.ModelSerializer):
     confirm_password = serializers.CharField(style={"input_type": "password"}, write_only=True,
                                              label="Confirm password")
     email = serializers.EmailField(required=True)
-    date_of_birth = serializers.DateField(required=True, format="DD-MM-YYYY")
+    date_of_birth = serializers.DateField(required=True)
     tags = serializers.SlugRelatedField(
         many=True,
         read_only=True,
