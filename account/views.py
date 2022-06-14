@@ -1,7 +1,12 @@
 # Create your views here.
-from rest_framework import permissions, decorators, response, status
+import datetime
 
+import jwt
+from account.models import User
 from account.serializers import DeveloperCreateSerializer, CompanyCreateSerializer
+from rest_framework import permissions, decorators, response, status
+from rest_framework.exceptions import AuthenticationFailed
+from rest_framework.response import Response
 from tag.models import Tag
 
 
@@ -31,3 +36,47 @@ def company_registration(request):
     user = serializer.save()
     res = {"status": True, "message": "Successfully registered"}
     return response.Response(res, status.HTTP_201_CREATED)
+
+
+@decorators.api_view(["POST"])
+def login(request):
+    email = request.data["email"]
+    password = request.data["password"]
+    selected_user = User.objects.filter(email=email).first()
+    if selected_user is None:
+        raise AuthenticationFailed('User not found')
+    if not selected_user.check_password(password):
+        raise AuthenticationFailed('Incorrect password')
+
+    payload = {
+        "id": selected_user.id,
+        "exp": datetime.datetime.utcnow() + datetime.timedelta(minutes=60),
+        "lat": str(datetime.datetime.utcnow()),
+    }
+
+    token = jwt.encode(payload, 'secret', algorithm='HS256')
+    res = Response()
+    res.set_cookie(key="JWT", value=token, httponly=True)
+    res.data = {
+        "status": True,
+        "message": "Login Success",
+        "token": token
+    }
+    return res
+
+
+@decorators.api_view(["GET"])
+def view_user(request):
+    token = request.COOKIES.get("JWT")
+    if not token:
+        raise AuthenticationFailed("Unauthenticated")
+    try:
+        payload = jwt.decode(token, 'secret', algorithms=['HS256'])
+    except jwt.ExpiredSignatureError:
+        raise AuthenticationFailed("Unauthenticated")
+    user = User.objects.filter(id=payload['id']).first()
+    if user.developer:
+        serializer = DeveloperCreateSerializer(user)
+    else:
+        serializer = CompanyCreateSerializer(user)
+    return Response(serializer.data)
