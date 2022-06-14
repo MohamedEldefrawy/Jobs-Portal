@@ -82,14 +82,28 @@ def view_user(request):
     return Response(serializer.data)
 
 
-@decorators.api_view(["GET"])
-def get_user(request, pk):
+@decorators.api_view(["GET", "PUT"])
+def user(request, pk):
     selected_user = User.objects.filter(pk=pk).first()
-    if selected_user:
-        if selected_user.developer:
-            serializer = DeveloperRetrieveSerialize(selected_user)
-            return Response(serializer.data, status.HTTP_200_OK)
-        elif selected_user.company:
-            serializer = CompanyRetrieveSerialize(selected_user)
-            return Response(serializer.data, status.HTTP_200_OK)
-    return Response({"message": "user is not found"}, status.HTTP_404_NOT_FOUND)
+    if request.method == "GET":
+        if selected_user:
+            if selected_user.developer:
+                serializer = DeveloperRetrieveSerialize(selected_user)
+                return Response(serializer.data, status.HTTP_200_OK)
+            elif selected_user.company:
+                serializer = CompanyRetrieveSerialize(selected_user)
+                return Response(serializer.data, status.HTTP_200_OK)
+        return Response({"message": "user is not found"}, status.HTTP_404_NOT_FOUND)
+    elif request.method == "PUT":
+        if selected_user:
+            if selected_user.developer:
+                serializer = DeveloperRetrieveSerialize(instance=selected_user, data=request.data, partial=True)
+                if serializer.is_valid():
+                    serializer.save()
+                return Response(serializer.data, status.HTTP_200_OK)
+            elif selected_user.company:
+                serializer = CompanyRetrieveSerialize(instance=selected_user, data=request.data, partial=True)
+                if serializer.is_valid():
+                    serializer.save()
+                return Response(serializer.data, status.HTTP_200_OK)
+        return Response({"message": "user is not found"}, status.HTTP_404_NOT_FOUND)
