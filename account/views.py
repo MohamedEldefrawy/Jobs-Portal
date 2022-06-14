@@ -8,13 +8,13 @@ from rest_framework.exceptions import AuthenticationFailed
 from rest_framework.response import Response
 from tag.models import Tag
 
-from .serializers import DeveloperCreateSerialize, CompanyCreateSerialize, DeveloperRetrieveSerialize
+from .serializers import DeveloperCreateSerialize, CompanyCreateSerialize, DeveloperRetrieveSerialize, \
+    UserLoginSerialize, CompanyRetrieveSerialize
 
 
 @decorators.api_view(["POST"])
 @decorators.permission_classes([permissions.AllowAny])
 def register(request):
-    print(request.data['developer'])
     if request.data['developer']:
         serializer = DeveloperCreateSerialize(data=request.data)
         if not serializer.is_valid(raise_exception=True):
@@ -76,16 +76,20 @@ def view_user(request):
         raise AuthenticationFailed("Unauthenticated")
     user = User.objects.filter(id=payload['id']).first()
     if user.developer:
-        serializer = DeveloperCreateSerialize(user)
+        serializer = UserLoginSerialize(user)
     else:
-        serializer = CompanyCreateSerialize(user)
+        serializer = UserLoginSerialize(user)
     return Response(serializer.data)
 
 
 @decorators.api_view(["GET"])
-def get_user(request):
-    selected_user = User.objects.filter(id=request.data["id"]).first()
-    if selected_user.developer:
-        serializer = DeveloperRetrieveSerialize(selected_user)
-        return Response(serializer.data, status.HTTP_200_OK)
+def get_user(request, pk):
+    selected_user = User.objects.filter(pk=pk).first()
+    if selected_user:
+        if selected_user.developer:
+            serializer = DeveloperRetrieveSerialize(selected_user)
+            return Response(serializer.data, status.HTTP_200_OK)
+        elif selected_user.company:
+            serializer = CompanyRetrieveSerialize(selected_user)
+            return Response(serializer.data, status.HTTP_200_OK)
     return Response({"message": "user is not found"}, status.HTTP_404_NOT_FOUND)
