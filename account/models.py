@@ -5,6 +5,8 @@ from django.db import models
 from django.utils.translation import gettext_lazy as _
 from tag.models import Tag
 
+from .validators import Validators
+
 
 class UserManager(BaseUserManager):
     def create_user(self, email, password=None):
@@ -70,6 +72,7 @@ class UserManager(BaseUserManager):
 
 class User(AbstractUser):
     username_validator = UnicodeUsernameValidator()
+    file_validator = Validators()
     username = models.CharField(
         _('username'),
         max_length=150,
@@ -80,7 +83,6 @@ class User(AbstractUser):
         error_messages={
             'unique': _("A user with that username already exists."),
         },
-        null=True,
     )
     is_activated = models.BooleanField(default=True)
 
@@ -97,6 +99,8 @@ class User(AbstractUser):
         null=True,
         blank=True,
     )
+    cv = models.FileField(upload_to="static/developers_cv", validators=[file_validator.validate_file_extension],
+                          null=True, blank=True)
     allow_mail_notification = models.BooleanField(default=True, null=True)
 
     # Company fields

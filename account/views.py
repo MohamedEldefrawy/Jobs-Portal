@@ -3,39 +3,39 @@ import datetime
 
 import jwt
 from account.models import User
-from account.serializers import DeveloperCreateSerializer, CompanyCreateSerializer
 from rest_framework import permissions, decorators, response, status
 from rest_framework.exceptions import AuthenticationFailed
 from rest_framework.response import Response
 from tag.models import Tag
 
-
-@decorators.api_view(["POST"])
-@decorators.permission_classes([permissions.AllowAny])
-def developer_registration(request):
-    serializer = DeveloperCreateSerializer(data=request.data)
-    if not serializer.is_valid(raise_exception=True):
-        return response.Response(serializer.errors, status.HTTP_400_BAD_REQUEST)
-    user = serializer.save()
-    selected_tags = []
-    print(request.data["tags"])
-    for tag in request.data["tags"]:
-        temp = Tag.objects.filter(name=tag["name"])
-        selected_tags.append(temp.get())
-    user.tags.set(selected_tags)
-    res = {"status": True, "message": "Successfully registered"}
-    return response.Response(res, status.HTTP_201_CREATED)
+from .serializers import DeveloperCreateSerialize, CompanyCreateSerialize, DeveloperRetrieveSerialize, \
+    UserLoginSerialize, CompanyRetrieveSerialize
 
 
 @decorators.api_view(["POST"])
 @decorators.permission_classes([permissions.AllowAny])
-def company_registration(request):
-    serializer = CompanyCreateSerializer(data=request.data)
-    if not serializer.is_valid(raise_exception=True):
-        return response.Response(serializer.errors, status.HTTP_400_BAD_REQUEST)
-    user = serializer.save()
-    res = {"status": True, "message": "Successfully registered"}
-    return response.Response(res, status.HTTP_201_CREATED)
+def register(request):
+    if request.data['developer']:
+        serializer = DeveloperCreateSerialize(data=request.data)
+        if not serializer.is_valid(raise_exception=True):
+            return response.Response(serializer.errors, status.HTTP_400_BAD_REQUEST)
+        user = serializer.save()
+        selected_tags = []
+        for tag in request.data["tags"]:
+            temp = Tag.objects.filter(name=tag["name"])
+            selected_tags.append(temp.get())
+        user.tags.set(selected_tags)
+        res = {"status": True, "message": "Successfully registered"}
+        return response.Response(res, status.HTTP_201_CREATED)
+    elif request.data['company']:
+        serializer = CompanyCreateSerialize(data=request.data)
+        if not serializer.is_valid(raise_exception=True):
+            return response.Response(serializer.errors, status.HTTP_400_BAD_REQUEST)
+        user = serializer.save()
+        res = {"status": True, "message": "Successfully registered"}
+        return response.Response(res, status.HTTP_201_CREATED)
+    else:
+        return response.Response({"Message": "please select correct account type"}, status.HTTP_400_BAD_REQUEST)
 
 
 @decorators.api_view(["POST"])
@@ -76,7 +76,20 @@ def view_user(request):
         raise AuthenticationFailed("Unauthenticated")
     user = User.objects.filter(id=payload['id']).first()
     if user.developer:
-        serializer = DeveloperCreateSerializer(user)
+        serializer = UserLoginSerialize(user)
     else:
-        serializer = CompanyCreateSerializer(user)
+        serializer = UserLoginSerialize(user)
     return Response(serializer.data)
+
+
+@decorators.api_view(["GET"])
+def get_user(request, pk):
+    selected_user = User.objects.filter(pk=pk).first()
+    if selected_user:
+        if selected_user.developer:
+            serializer = DeveloperRetrieveSerialize(selected_user)
+            return Response(serializer.data, status.HTTP_200_OK)
+        elif selected_user.company:
+            serializer = CompanyRetrieveSerialize(selected_user)
+            return Response(serializer.data, status.HTTP_200_OK)
+    return Response({"message": "user is not found"}, status.HTTP_404_NOT_FOUND)

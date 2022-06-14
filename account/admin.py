@@ -15,7 +15,7 @@ class UserAdmin(BaseUserAdmin):
     fieldsets = (
         (None, {'fields': ('username', 'email')}),
         ('Developer fields',
-         {'fields': ('gender', 'date_of_birth', 'tags', 'applied_job', 'allow_mail_notification')}),
+         {'fields': ('gender', 'date_of_birth', 'tags', 'applied_job', 'allow_mail_notification', 'cv')}),
         ('Company fields', {'fields': ('address', 'history')}),
         ('Permissions', {'fields': ('admin', 'company', 'developer')}),
     )
