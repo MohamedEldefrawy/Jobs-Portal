@@ -80,3 +80,9 @@ def view_user(request):
     else:
         serializer = CompanyCreateSerializer(user)
     return Response(serializer.data)
+
+
+@decorators.api_view(["GET"])
+def get_user(request):
+    
+    return Response(serializer.data)

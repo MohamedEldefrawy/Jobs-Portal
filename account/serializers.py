@@ -8,6 +8,7 @@ class DeveloperCreateSerializer(serializers.ModelSerializer):
                                              label="Confirm password")
     email = serializers.EmailField(required=True)
     date_of_birth = serializers.DateField(required=True)
+
     tags = serializers.SlugRelatedField(
         many=True,
         read_only=True,
@@ -62,3 +63,10 @@ class CompanyCreateSerializer(serializers.ModelSerializer):
         user.set_password(password)
         user.save()
         return user
+
+
+class DeveloperRetrieveSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = User
+        fields = ["email", "gender", "developer", "date_of_birth", "tags", "cv"]
+        depth = 1
