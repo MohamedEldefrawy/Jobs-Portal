@@ -13,6 +13,7 @@ def developer_registration(request):
         return response.Response(serializer.errors, status.HTTP_400_BAD_REQUEST)
     user = serializer.save()
     selected_tags = []
+    print(request.data["tags"])
     for tag in request.data["tags"]:
         temp = Tag.objects.filter(name=tag["name"])
         selected_tags.append(temp.get())
