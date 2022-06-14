@@ -2,7 +2,7 @@ from account.models import User
 from rest_framework import serializers
 
 
-class DeveloperCreateSerializer(serializers.ModelSerializer):
+class DeveloperCreateSerialize(serializers.ModelSerializer):
     password = serializers.CharField(write_only=True, required=True, style={"input_type": "password"})
     confirm_password = serializers.CharField(style={"input_type": "password"}, write_only=True,
                                              label="Confirm password")
@@ -38,7 +38,7 @@ class DeveloperCreateSerializer(serializers.ModelSerializer):
         return user
 
 
-class CompanyCreateSerializer(serializers.ModelSerializer):
+class CompanyCreateSerialize(serializers.ModelSerializer):
     password = serializers.CharField(write_only=True, required=True, style={"input_type": "password"})
     confirm_password = serializers.CharField(style={"input_type": "password"}, write_only=True,
                                              label="Confirm password")
@@ -65,7 +65,7 @@ class CompanyCreateSerializer(serializers.ModelSerializer):
         return user
 
 
-class DeveloperRetrieveSerializer(serializers.ModelSerializer):
+class DeveloperRetrieveSerialize(serializers.ModelSerializer):
     class Meta:
         model = User
         fields = ["email", "gender", "developer", "date_of_birth", "tags", "cv"]
