@@ -81,13 +81,14 @@ WSGI_APPLICATION = 'jobsportal.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'Jobs',
-        'USER': 'postgres',
-        'PASSWORD': '12345678',
+        'NAME': 'ITI_django',
+        'USER': 'admin',
+        'PASSWORD': '0000',
         'HOST': 'localhost',
-        'PORT': '5432',
+        'PORT': '',
     }
 }
+
 # Password validation
 # https://docs.djangoproject.com/en/4.0/ref/settings/#auth-password-validators
 
