@@ -1,22 +1,20 @@
+from account.models import User
 from django.core.exceptions import ObjectDoesNotExist
 from django.utils.translation import gettext_lazy as _
-
 from rest_framework import permissions, decorators, response, status
-from rest_framework.authtoken.views import ObtainAuthToken
 from rest_framework.authtoken.models import Token
+from rest_framework.authtoken.views import ObtainAuthToken
 from rest_framework.response import Response
-
-import datetime
-from account.models import User
 from tag.models import Tag
 
 from .serializers import DeveloperCreateSerialize, CompanyCreateSerialize, DeveloperRetrieveSerialize, \
     UserLoginSerialize, CompanyRetrieveSerialize
 
+
 class CustomAuthToken(ObtainAuthToken):
     def post(self, request, *args, **kwargs):
         serializer = self.serializer_class(data=request.data,
-                                       context={'request': request})
+                                           context={'request': request})
         serializer.is_valid(raise_exception=True)
         user = serializer.validated_data['user']
         token, created = Token.objects.get_or_create(user=user)
@@ -25,6 +23,7 @@ class CustomAuthToken(ObtainAuthToken):
             'user_id': user.pk,
             'email': user.email
         })
+
 
 @decorators.api_view(["POST"])
 @decorators.permission_classes([permissions.AllowAny])
@@ -64,7 +63,7 @@ def view_user(request):
 
 @decorators.api_view(["GET", "PUT"])
 def user(request, user_id):
-    selected_user = User.objects.filter(user_id=user_id).first()
+    selected_user = User.objects.filter(id=user_id).first()
     if request.method == "GET":
         if selected_user:
             if selected_user.developer:

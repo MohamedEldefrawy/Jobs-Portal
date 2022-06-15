@@ -88,6 +88,7 @@ DATABASES = {
         'PORT': '',
     }
 }
+
 # Password validation
 # https://docs.djangoproject.com/en/4.0/ref/settings/#auth-password-validators
 
@@ -134,19 +135,18 @@ MESSAGE_STORAGE = 'django.contrib.messages.storage.session.SessionStorage'
 
 # Configuration Mail
 EMAIL_HOST = 'smtp.mailtrap.io'
-EMAIL_HOST_USER = '13e407431a0c47'
-EMAIL_HOST_PASSWORD = '8b198c1b17ae37'
+EMAIL_HOST_USER = 'd2416cc7770b8c'
+EMAIL_HOST_PASSWORD = 'bd123cd9b92a7f'
 EMAIL_PORT = '2525'
-
 
 # Rest api configuration
 
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES':
-    ['rest_framework.authentication.TokenAuthentication'],
+        ['rest_framework.authentication.TokenAuthentication'],
 
     'DEFAULT_PERMISSION_CLASSES':
-    ['rest_framework.permissions.IsAuthenticated']
+        ['rest_framework.permissions.IsAuthenticated']
 }
 
 AUTH_USER_MODEL = 'account.User'

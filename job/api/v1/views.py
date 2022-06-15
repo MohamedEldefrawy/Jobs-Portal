@@ -67,4 +67,4 @@ def job_update(request, job_id):
 @api_view(['DELETE'])
 def job_delete(request, job_id):
     Job.objects.get(pk=job_id).delete()
-    return Response(data={'details': 'Actor deleted successfully'}, status=status.HTTP_204_NO_CONTENT)
+    return Response(data={'details': 'Job deleted successfully'}, status=status.HTTP_204_NO_CONTENT)
