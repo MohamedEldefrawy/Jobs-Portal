@@ -65,23 +65,6 @@ def login(request):
     return res
 
 
-@decorators.api_view(["GET"])
-def view_user(request):
-    token = request.COOKIES.get("JWT")
-    if not token:
-        raise AuthenticationFailed("Unauthenticated")
-    try:
-        payload = jwt.decode(token, 'secret', algorithms=['HS256'])
-    except jwt.ExpiredSignatureError:
-        raise AuthenticationFailed("Unauthenticated")
-    user = User.objects.filter(id=payload['id']).first()
-    if user.developer:
-        serializer = UserLoginSerialize(user)
-    else:
-        serializer = UserLoginSerialize(user)
-    return Response(serializer.data)
-
-
 @decorators.api_view(["GET", "PUT"])
 def user(request, user_id):
     selected_user = User.objects.filter(user_id=user_id).first()

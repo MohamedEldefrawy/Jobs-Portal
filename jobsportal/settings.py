@@ -81,11 +81,11 @@ WSGI_APPLICATION = 'jobsportal.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'ITI_django',
-        'USER': 'admin',
-        'PASSWORD': '0000',
+        'NAME': 'Jobs',
+        'USER': 'postgres',
+        'PASSWORD': '12345678',
         'HOST': 'localhost',
-        'PORT': '',
+        'PORT': '5432',
     }
 }
 # Password validation
@@ -138,15 +138,14 @@ EMAIL_HOST_USER = '13e407431a0c47'
 EMAIL_HOST_PASSWORD = '8b198c1b17ae37'
 EMAIL_PORT = '2525'
 
-
 # Rest api configuration
 
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES':
-    ['rest_framework.authentication.TokenAuthentication'],
+        ['rest_framework.authentication.TokenAuthentication'],
 
     'DEFAULT_PERMISSION_CLASSES':
-    ['rest_framework.permissions.IsAuthenticated']
+        ['rest_framework.permissions.IsAuthenticated']
 }
 
 AUTH_USER_MODEL = 'account.User'
