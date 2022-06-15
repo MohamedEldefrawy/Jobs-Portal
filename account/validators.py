@@ -4,7 +4,7 @@ from django.core.exceptions import ValidationError
 
 class Validators:
 
-    def validate_file_extension(value):
+    def validate_file_extension(self, value):
         import os
         from django.core.exceptions import ValidationError
         ext = os.path.splitext(value.name)[1]  # [0] returns path+filename

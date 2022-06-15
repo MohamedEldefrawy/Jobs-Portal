@@ -18,6 +18,7 @@ class UserAdmin(BaseUserAdmin):
          {'fields': ('gender', 'date_of_birth', 'tags', 'applied_job', 'allow_mail_notification', 'cv')}),
         ('Company fields', {'fields': ('address', 'history')}),
         ('Permissions', {'fields': ('admin', 'company', 'developer')}),
+        ('Is Activated By Admin', {'fields': ('is_activated',)}),
     )
     ordering = ['email']
     filter_horizontal = ()
