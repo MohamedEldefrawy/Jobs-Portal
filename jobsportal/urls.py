@@ -23,8 +23,7 @@ from django.urls import path, include
 
 urlpatterns = [
                   path('admin/', admin.site.urls),
-                  path('accounts/', include('account.urls')),
+                  path('api/v1/account/', include('account.api.v1.urls')),
                   path('tags/', include('tag.urls')),
-                  # path('jobs/', jobs_views.job),
-                  # path('jobs/<int:id>', jobs_views.job),
+                  path('api/v1/job/', include('job.api.v1.urls')),
               ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
