@@ -1,9 +1,11 @@
 from django.contrib.auth.base_user import BaseUserManager
-from django.db import models
-from tag.models import Tag
 from django.contrib.auth.models import AbstractUser
-from django.utils.translation import gettext_lazy as _
 from django.contrib.auth.validators import UnicodeUsernameValidator
+from django.db import models
+from django.utils.translation import gettext_lazy as _
+from tag.models import Tag
+
+from .validators import Validators
 
 
 class UserManager(BaseUserManager):
@@ -70,6 +72,7 @@ class UserManager(BaseUserManager):
 
 class User(AbstractUser):
     username_validator = UnicodeUsernameValidator()
+    file_validator = Validators()
     username = models.CharField(
         _('username'),
         max_length=150,
@@ -80,7 +83,6 @@ class User(AbstractUser):
         error_messages={
             'unique': _("A user with that username already exists."),
         },
-        null=True,
     )
     is_activated = models.BooleanField(default=True)
 
@@ -91,12 +93,14 @@ class User(AbstractUser):
         choices=[('male', 'male'), ('female', 'female')], max_length=6, default='male', null=True, blank=True)
     date_of_birth = models.DateField(null=True, blank=True)
     tags = models.ManyToManyField(Tag, blank=True)
-    # applied_job = models.ForeignKey(
-    #     'job.Job',
-    #     on_delete=models.CASCADE,
-    #     null=True,
-    #     blank=True,
-    # )
+    applied_job = models.ForeignKey(
+        'job.Job',
+        on_delete=models.CASCADE,
+        null=True,
+        blank=True,
+    )
+    cv = models.FileField(upload_to="static/developers_cv", validators=[file_validator.validate_file_extension],
+                          null=True, blank=True)
     allow_mail_notification = models.BooleanField(default=True, null=True)
 
     # Company fields

@@ -30,7 +30,6 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
-    'rest_framework',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -38,10 +37,11 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'django_extensions',
+    'rest_framework',
+    'rest_framework.authtoken',
     'job',
     'tag',
     'account',
-    'cv',
     'notification',
 ]
 
@@ -81,14 +81,13 @@ WSGI_APPLICATION = 'jobsportal.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'Jobs',
-        'USER': 'postgres',
-        'PASSWORD': '12345678',
+        'NAME': 'ITI_django',
+        'USER': 'admin',
+        'PASSWORD': '0000',
         'HOST': 'localhost',
-        'PORT': '5432',
+        'PORT': '',
     }
 }
-
 # Password validation
 # https://docs.djangoproject.com/en/4.0/ref/settings/#auth-password-validators
 
@@ -130,3 +129,24 @@ MEDIA_URL = '/media/'
 # https://docs.djangoproject.com/en/4.0/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+MESSAGE_STORAGE = 'django.contrib.messages.storage.session.SessionStorage'
+
+# Configuration Mail
+EMAIL_HOST = 'smtp.mailtrap.io'
+EMAIL_HOST_USER = '13e407431a0c47'
+EMAIL_HOST_PASSWORD = '8b198c1b17ae37'
+EMAIL_PORT = '2525'
+
+
+# Rest api configuration
+
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES':
+    ['rest_framework.authentication.TokenAuthentication'],
+
+    'DEFAULT_PERMISSION_CLASSES':
+    ['rest_framework.permissions.IsAuthenticated']
+}
+
+AUTH_USER_MODEL = 'account.User'

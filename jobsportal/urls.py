@@ -18,14 +18,12 @@ from django.conf.urls.static import static
 from django.contrib import admin
 from django.urls import path, include
 
-from job import views as jobs_views
-from tag import views
+# from job import views as jobs_views
+# from tag import urls
 
 urlpatterns = [
                   path('admin/', admin.site.urls),
-                  path('accounts/', include('account.urls')),
-                  path('tags/', views.tag),
-                  path('tags/<int:id>', views.tag),
-                  path('jobs/', jobs_views.job),
-                  path('jobs/<int:id>', jobs_views.job),
+                  path('api/v1/account/', include('account.api.v1.urls')),
+                  path('tags/', include('tag.urls')),
+                  path('api/v1/job/', include('job.api.v1.urls')),
               ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
