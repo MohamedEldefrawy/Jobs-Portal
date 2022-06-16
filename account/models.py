@@ -106,7 +106,6 @@ class User(AbstractUser):
     # Company fields
     address = models.CharField(max_length=300, null=True, blank=True)
     history = models.TextField(null=True, blank=True)
-
     # User type fields
     company = models.BooleanField(default=False)
     developer = models.BooleanField(default=False)
