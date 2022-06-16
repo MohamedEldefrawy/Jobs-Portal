@@ -21,7 +21,6 @@
 ### Built with
 
 * [django](https://www.djangoproject.com/)
-* [PyJWT](https://pyjwt.readthedocs.io/en/stable/)
 * [django-cors-headers](https://djangopackages.org/packages/p/django-cors-headers/)
 * [psycopg2-binary](https://pypi.org/project/psycopg2-binary/2.7.3.2/)
 * [djangorestframework](https://www.django-rest-framework.org/)
