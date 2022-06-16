@@ -81,11 +81,11 @@ WSGI_APPLICATION = 'jobsportal.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'ITI_django',
-        'USER': 'admin',
-        'PASSWORD': '0000',
+        'NAME': 'Jobs',
+        'USER': 'postgres',
+        'PASSWORD': '12345678',
         'HOST': 'localhost',
-        'PORT': '',
+        'PORT': '5432',
     }
 }
 
@@ -137,7 +137,7 @@ MESSAGE_STORAGE = 'django.contrib.messages.storage.session.SessionStorage'
 EMAIL_HOST = 'smtp.mailtrap.io'
 EMAIL_HOST_USER = 'd2416cc7770b8c'
 EMAIL_HOST_PASSWORD = 'bd123cd9b92a7f'
-EMAIL_PORT = '2525'
+EMAIL_PORT = '465'
 
 # Rest api configuration
 
