@@ -4,4 +4,5 @@ from tag import views
 app_name = 'tags'
 urlpatterns = [
     path('', views.tags),
+    path('<int:id>', views.tag)
 ]
