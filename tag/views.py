@@ -1,5 +1,5 @@
 from django.http import JsonResponse
-from rest_framework import status
+from rest_framework import status, decorators, permissions
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 
@@ -9,6 +9,7 @@ from .serializers import TagSerializer
 
 # Create your views here
 @api_view(['GET', 'POST'])
+@decorators.permission_classes([permissions.AllowAny])
 def tags(request):
     if request.method == 'GET':
         serializer = TagSerializer(Tag.objects.all(), many=True)
