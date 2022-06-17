@@ -26,4 +26,5 @@ urlpatterns = [
                   path('api/v1/account/', include('account.api.v1.urls')),
                   path('tags/', include('tag.urls')),
                   path('api/v1/job/', include('job.api.v1.urls')),
+                  path('api/v1/notifications/', include('notification.api.v1.urls')),
               ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
