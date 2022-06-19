@@ -12,7 +12,7 @@ def user_creation_signal_handler(sender, instance, **kwargs):
         print(created_object)
         subject = "New account has been created"
         msg = f'user name: {instance.username}\n email: {instance.email}'
-        sender = "madoo_drunk@yahoo.com"
-        receivers = ['mohamed.ahmed.aly.d@gmail.com']
+        sender = "Jobs@Jobs.com"
+        receivers = ['admin@admin.com']
         send_mail(subject=subject, message=msg,
                   from_email=sender, recipient_list=receivers)

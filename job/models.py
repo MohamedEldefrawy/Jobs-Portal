@@ -1,5 +1,4 @@
 from django.db import models
-from django.utils import timezone
 from tag.models import Tag
 
 
@@ -18,7 +17,8 @@ class Job(models.Model):
     tags = models.ManyToManyField(Tag)
     banner_img = models.ImageField(upload_to='account', null=True, blank=True)
     status = models.CharField(
-        choices=[('open', 'open'), ('in_progress', 'in_progress'), ('finished', 'finished')], max_length=20, default='open')
+        choices=[('open', 'open'), ('in_progress', 'in_progress'), ('finished', 'finished')], max_length=20,
+        default='open')
     accepted_dev = models.ForeignKey(
         'account.User',
         on_delete=models.CASCADE,
